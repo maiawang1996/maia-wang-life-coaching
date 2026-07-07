@@ -9,15 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ivory: "#F7F1E8",
-        mist: "#DCE7E6",
-        sage: "#8FA596",
-        clay: "#C88F78",
-        ink: "#2F3532",
-        stone: "#7E7A73"
+        ivory: "#F7F1E6",
+        parchment: "#EFE7D8",
+        mist: "#DCE8E6",
+        sage: "#7F998A",
+        sageDeep: "#647E70",
+        clay: "#C3876E",
+        ink: "#303733",
+        stone: "#747169"
       },
       boxShadow: {
-        soft: "0 18px 45px rgba(47, 53, 50, 0.10)"
+        soft: "0 22px 55px rgba(48, 55, 51, 0.10)"
       },
       fontFamily: {
         sans: ["Avenir Next", "Inter", "Helvetica Neue", "Arial", "system-ui", "sans-serif"],

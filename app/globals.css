@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  color: #2f3532;
-  background: #f7f1e8;
+  color: #303733;
+  background: #f7f1e6;
   scroll-behavior: smooth;
 }
 
@@ -12,17 +12,22 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #f7f1e6;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(220, 231, 230, 0.72), transparent 34rem),
-    linear-gradient(180deg, #f7f1e8 0%, #f3eee6 48%, #ecf1ef 100%);
-  color: #2f3532;
+    linear-gradient(180deg, rgba(247, 241, 230, 0.96) 0%, rgba(244, 238, 226, 0.98) 44%, rgba(231, 239, 237, 0.8) 100%),
+    #f7f1e6;
+  color: #303733;
+  text-rendering: geometricPrecision;
 }
 
 ::selection {
-  background: rgba(200, 143, 120, 0.28);
+  background: rgba(195, 135, 110, 0.24);
 }
 
 input,
@@ -31,23 +36,115 @@ button {
   font: inherit;
 }
 
-.section-shell {
-  margin-inline: auto;
-  width: min(1120px, calc(100% - 32px));
+a {
+  text-decoration-thickness: 1px;
 }
 
-.soft-focus {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(247, 241, 232, 0.42)),
-    rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(18px);
+@layer components {
+  .site-shell {
+    margin-inline: auto;
+    width: min(1160px, calc(100% - 32px));
+  }
+
+  .narrow-shell {
+    margin-inline: auto;
+    width: min(760px, calc(100% - 32px));
+  }
+
+  .section-label {
+    @apply inline-flex items-center gap-3 font-serif text-xl leading-none text-clay sm:text-2xl;
+  }
+
+  .section-label::after {
+    content: "";
+    @apply block h-px w-12 bg-clay/35;
+  }
+
+  .quiet-link {
+    @apply text-stone transition hover:text-sage;
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-sage px-6 py-3 text-sm font-medium text-white shadow-[0_14px_30px_rgba(105,128,113,0.18)] transition hover:-translate-y-0.5 hover:bg-sageDeep focus:outline-none focus:ring-4 focus:ring-sage/20;
+  }
+
+  .journal-card {
+    @apply rounded-lg border border-sage/15 bg-white/40 shadow-[0_18px_45px_rgba(48,55,51,0.07)] backdrop-blur-sm;
+  }
+
+  .field-label {
+    @apply text-sm font-medium text-ink;
+  }
+
+  .field-input {
+    @apply mt-2 w-full rounded-lg border border-sage/20 bg-ivory/70 px-4 py-3 text-ink outline-none transition placeholder:text-stone/55 focus:border-sage focus:ring-4 focus:ring-sage/15;
+  }
 }
 
 .font-zh {
-  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-family:
+    "PingFang SC",
+    "Hiragino Sans GB",
+    "Noto Sans CJK SC",
+    "Microsoft YaHei UI",
+    "Microsoft YaHei",
+    system-ui,
+    sans-serif;
+  letter-spacing: 0;
 }
 
 .font-zh .font-serif {
-  font-family: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
-  letter-spacing: 0.01em;
+  font-family:
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "STSong",
+    "SimSun",
+    serif;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.font-zh p {
+  line-height: 1.95;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 780ms ease both;
+}
+
+.animate-fade-in {
+  animation: fade-in 900ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
 }

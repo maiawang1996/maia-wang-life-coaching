@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Maia Wang | Life Coaching",
   description:
-    "Bilingual life coaching for thoughtful, ambitious people navigating transition, clarity, and self-discovery."
+    "Bilingual life coaching with Maia Wang for clarity, self-discovery, and a life that feels true to you."
 };
 
 export default function RootLayout({

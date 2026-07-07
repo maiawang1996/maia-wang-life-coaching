@@ -7,17 +7,22 @@ import { content, Language } from "@/lib/content";
 const email = "maiaworld@163.com";
 const redNoteUrl = "https://www.xiaohongshu.com/user/profile/5f8f21aa0000000001002ad6";
 const youtubeUrl = "https://www.youtube.com/channel/UCnZMoERieFqMkHyRs7iBykA";
+const podcastUrl = "https://www.xiaoyuzhoufm.com/podcast/67114d960d2f24f289ecc048";
 
-const navIds = {
-  about: "about",
-  services: "services",
-  approach: "approach",
-  contact: "contact"
-} as const;
+type SiteContent = (typeof content)[Language];
+
+const navItems = [
+  { key: "home", href: "#home" },
+  { key: "about", href: "#about" },
+  { key: "coaching", href: "#coaching" },
+  { key: "faq", href: "#faq" },
+  { key: "contact", href: "#contact" }
+] as const;
 
 export default function LifeCoachSite() {
   const [language, setLanguage] = useState<Language>("en");
   const [submitted, setSubmitted] = useState(false);
+  const [openFaq, setOpenFaq] = useState(0);
   const t = useMemo(() => content[language], [language]);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -28,287 +33,410 @@ export default function LifeCoachSite() {
 
   return (
     <main lang={language === "zh" ? "zh-CN" : "en"} className={language === "zh" ? "font-zh" : undefined}>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/45 bg-ivory/82 backdrop-blur-xl">
-        <div className="section-shell flex h-20 items-center justify-between gap-5">
-          <a href="/" className="group flex items-center gap-3" aria-label="Maia Wang home">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-sage/20 text-sm font-semibold text-ink ring-1 ring-sage/25 transition group-hover:bg-sage/28">
-              MW
-            </span>
-            <span className="leading-tight">
-              <span className="block font-serif text-xl text-ink">Maia Wang</span>
-              <span className="block text-xs uppercase tracking-[0.24em] text-stone">Life Coach</span>
-            </span>
-          </a>
+      <Header language={language} setLanguage={setLanguage} t={t} />
+      <Hero t={t} />
+      <LetterSection t={t} />
+      <MeetMaia t={t} />
+      <HowWeWork t={t} />
+      <Services t={t} />
+      <Testimonials t={t} />
+      <FAQ t={t} openFaq={openFaq} setOpenFaq={setOpenFaq} />
+      <Contact t={t} submitted={submitted} onSubmit={handleSubmit} />
+      <Footer t={t} />
+    </main>
+  );
+}
 
-          <nav className="hidden items-center gap-7 text-sm text-stone lg:flex">
-            <a className="transition hover:text-ink" href={`#${navIds.about}`}>
-              {t.nav.about}
-            </a>
-            <a className="transition hover:text-ink" href={`#${navIds.services}`}>
-              {t.nav.services}
-            </a>
-            <a className="transition hover:text-ink" href={`#${navIds.approach}`}>
-              {t.nav.approach}
-            </a>
-            <a className="transition hover:text-ink" href={`#${navIds.contact}`}>
-              {t.nav.contact}
-            </a>
-          </nav>
+function Header({
+  language,
+  setLanguage,
+  t
+}: {
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: SiteContent;
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-          <div className="flex items-center gap-2">
-            <div className="hidden items-center gap-2 text-xs text-stone sm:flex">
-              <a
-                className="rounded-full px-3 py-2 transition hover:bg-white/65 hover:text-ink"
-                href={redNoteUrl}
-                aria-label="Red Note link"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t.nav.redNote}
-              </a>
-              <a
-                className="rounded-full px-3 py-2 transition hover:bg-white/65 hover:text-ink"
-                href={youtubeUrl}
-                aria-label="YouTube link"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t.nav.youtube}
-              </a>
-            </div>
-            <div className="flex rounded-full border border-sage/25 bg-white/55 p-1 text-xs shadow-sm">
-              <button
-                className={`rounded-full px-3 py-2 transition ${language === "en" ? "bg-ink text-white" : "text-stone hover:text-ink"}`}
-                onClick={() => setLanguage("en")}
-                type="button"
-              >
-                English
-              </button>
-              <button
-                className={`rounded-full px-3 py-2 transition ${language === "zh" ? "bg-ink text-white" : "text-stone hover:text-ink"}`}
-                onClick={() => setLanguage("zh")}
-                type="button"
-              >
-                中文
-              </button>
-            </div>
-          </div>
+  return (
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-sage/10 bg-ivory/88 backdrop-blur-xl">
+      <div className="site-shell flex h-16 items-center justify-between gap-5 sm:h-[72px]">
+        <a
+          href="#home"
+          className="font-serif text-xl tracking-[0.02em] text-ink transition hover:text-sage"
+          onClick={() => setMenuOpen(false)}
+        >
+          Maia Wang
+        </a>
+
+        <nav className="hidden items-center gap-8 text-[13px] text-stone lg:flex">
+          {navItems.map((item) => (
+            <a key={item.key} className="quiet-link" href={item.href}>
+              {t.meta[item.key]}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-2 lg:flex">
+          <SocialLinks t={t} />
+          <LanguageSwitcher language={language} setLanguage={setLanguage} />
         </div>
-      </header>
 
-      <section className="relative isolate min-h-[92vh] overflow-hidden pt-20">
+        <div className="flex items-center gap-2 lg:hidden">
+          <LanguageSwitcher language={language} setLanguage={setLanguage} compact />
+          <button
+            type="button"
+            className="rounded-full border border-sage/20 px-4 py-2 text-xs uppercase tracking-[0.18em] text-ink transition hover:border-sage/45 hover:bg-mist/35"
+            onClick={() => setMenuOpen((value) => !value)}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? t.meta.close : t.meta.menu}
+          </button>
+        </div>
+      </div>
+
+      {menuOpen ? (
+        <div className="border-t border-sage/10 bg-ivory/96 px-5 py-5 shadow-soft lg:hidden">
+          <nav className="mx-auto grid max-w-sm gap-4 text-sm text-ink">
+            {navItems.map((item) => (
+              <a key={item.key} href={item.href} className="py-1" onClick={() => setMenuOpen(false)}>
+                {t.meta[item.key]}
+              </a>
+            ))}
+            <div className="mt-2 flex flex-wrap gap-3 border-t border-sage/12 pt-4 text-xs text-stone">
+              <SocialLinks t={t} />
+            </div>
+          </nav>
+        </div>
+      ) : null}
+    </header>
+  );
+}
+
+function LanguageSwitcher({
+  language,
+  setLanguage,
+  compact = false
+}: {
+  language: Language;
+  setLanguage: (language: Language) => void;
+  compact?: boolean;
+}) {
+  return (
+    <div className="flex rounded-full border border-sage/20 bg-parchment/70 p-1 text-xs shadow-[0_8px_24px_rgba(47,53,50,0.05)]">
+      {(["en", "zh"] as const).map((item) => (
+        <button
+          key={item}
+          type="button"
+          className={`rounded-full px-3 py-1.5 transition ${
+            language === item ? "bg-sage text-white" : "text-stone hover:text-ink"
+          } ${compact ? "px-2.5" : ""}`}
+          onClick={() => setLanguage(item)}
+        >
+          {item === "en" ? "English" : "中文"}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function SocialLinks({ t }: { t: SiteContent }) {
+  return (
+    <>
+      <a className="quiet-link px-1" href={redNoteUrl} target="_blank" rel="noreferrer">
+        {t.meta.redNote}
+      </a>
+      <a className="quiet-link px-1" href={youtubeUrl} target="_blank" rel="noreferrer">
+        {t.meta.youtube}
+      </a>
+      <a className="quiet-link px-1" href={podcastUrl} aria-label="Podcast placeholder">
+        {t.meta.podcast}
+      </a>
+    </>
+  );
+}
+
+function Hero({ t }: { t: SiteContent }) {
+  return (
+    <section id="home" className="site-shell grid min-h-[92vh] items-center gap-12 pb-20 pt-28 sm:pt-32 lg:grid-cols-[minmax(0,0.94fr)_minmax(300px,0.72fr)]">
+      <div className="animate-fade-up max-w-[760px]">
+        <p className="section-label">{t.hero.label}</p>
+        <h1 className="mt-7 max-w-[760px] font-serif text-[clamp(3.25rem,6vw,6.75rem)] leading-[0.98] text-ink">
+          {t.hero.title}
+        </h1>
+        <p className="mt-8 max-w-[690px] text-lg leading-8 text-stone sm:text-xl sm:leading-9">
+          {t.hero.subtitle}
+        </p>
+        <a href="#contact" className="button-primary mt-10">
+          {t.hero.cta}
+        </a>
+      </div>
+
+      <div className="animate-fade-in relative mx-auto aspect-[4/5] w-full max-w-[390px] overflow-hidden rounded-t-[220px] rounded-b-lg border border-white/60 bg-mist/35 shadow-soft">
         <Image
           src="/images/hero-wellness.png"
-          alt=""
+          alt={t.hero.imageAlt}
           fill
           priority
-          className="absolute inset-0 -z-20 object-cover"
-          sizes="100vw"
+          className="object-cover opacity-[0.92] saturate-[0.78]"
+          sizes="(min-width: 1024px) 390px, 86vw"
         />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ivory via-ivory/88 to-ivory/22" />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-36 bg-gradient-to-t from-ivory to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ivory/28 via-transparent to-white/12" />
+      </div>
+    </section>
+  );
+}
 
-        <div className="section-shell grid min-h-[calc(92vh-5rem)] items-center pb-20 pt-16">
-          <div className="max-w-3xl">
-            <p className="mb-5 text-sm uppercase tracking-[0.32em] text-clay">{t.hero.eyebrow}</p>
-            <h1 className="font-serif text-5xl leading-[0.98] text-ink sm:text-6xl lg:text-7xl">
-              {t.hero.title}
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-stone sm:text-xl">
-              {t.hero.subtitle}
+function LetterSection({ t }: { t: SiteContent }) {
+  return (
+    <section className="border-y border-sage/10 bg-parchment/55 py-24 sm:py-32">
+      <div className="narrow-shell">
+        <p className="section-label">{t.letter.label}</p>
+        <div className="mt-8 space-y-3.5 sm:space-y-4">
+          {t.letter.lines.map((line, index) => (
+            <p
+              key={`${line}-${index}`}
+              className={`animate-fade-up text-pretty leading-9 text-ink ${
+                isEmphasisLine(line) ? "font-serif text-xl leading-8 sm:text-2xl sm:leading-9" : "text-base leading-7 sm:text-lg sm:leading-8"
+              }`}
+              style={{ animationDelay: `${Math.min(index * 35, 360)}ms` }}
+            >
+              {line}
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-medium text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-sage"
-              >
-                {t.hero.primaryCta}
-              </a>
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center justify-center rounded-full border border-sage/35 bg-white/62 px-6 py-3 text-sm font-medium text-ink transition hover:-translate-y-0.5 hover:bg-white"
-              >
-                {t.hero.secondaryCta}
-              </a>
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section id="about" className="section-shell py-20 sm:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-clay">{t.about.label}</p>
-            <h2 className="mt-4 font-serif text-4xl leading-tight text-ink sm:text-5xl">
-              {t.about.title}
-            </h2>
+function MeetMaia({ t }: { t: SiteContent }) {
+  return (
+    <section id="about" className="site-shell py-24 sm:py-32">
+      <div className="grid gap-14 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)]">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <p className="section-label">{t.meet.label}</p>
+        <h2 className="mt-7 max-w-md font-serif text-4xl leading-tight text-ink sm:text-5xl">
+            {t.meet.title}
+          </h2>
+        </div>
+        <div>
+          <div className="max-w-[760px] space-y-6 text-lg leading-9 text-stone">
+            {t.meet.body.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
-          <div className="soft-focus rounded-lg border border-white/65 p-6 shadow-soft sm:p-8">
-            <div className="space-y-5 text-base leading-8 text-stone">
-              {t.about.body.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+
+          <div className="mt-16 max-w-[760px]">
+            <h3 className="font-serif text-3xl text-ink">{t.meet.journeyTitle}</h3>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+              {t.meet.journey.map((item) => (
+                <div key={item} className="journal-card px-5 py-4 text-sm leading-6 text-ink">
+                  {item}
+                </div>
               ))}
             </div>
-            {t.about.highlights.length > 0 ? (
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                {t.about.highlights.map((item) => (
-                  <div key={item} className="rounded-lg border border-sage/20 bg-white/48 px-4 py-3 text-sm text-ink">
-                    {item}
-                  </div>
-                ))}
-              </div>
-            ) : null}
           </div>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section id="services" className="bg-white/35 py-20 sm:py-28">
-        <div className="section-shell">
-          <div className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.28em] text-clay">{t.services.label}</p>
-            <h2 className="mt-4 font-serif text-4xl leading-tight text-ink sm:text-5xl">
-              {t.services.title}
-            </h2>
-          </div>
-          <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {t.services.cards.map((service) => (
-              <article
-                key={service.title}
-                className="flex min-h-[390px] flex-col rounded-lg border border-white/70 bg-ivory/72 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-soft"
-              >
-                <h3 className="font-serif text-3xl leading-tight text-ink">{service.title}</h3>
-                <p className="mt-5 leading-7 text-stone">{service.description}</p>
-                <p className="mt-5 text-sm leading-6 text-ink">{service.bestFor}</p>
-                <p className="mt-4 rounded-lg bg-mist/50 px-4 py-3 text-sm leading-6 text-ink">
-                  {service.format}
-                </p>
-                <a
-                  href="#contact"
-                  className="mt-auto inline-flex items-center justify-center rounded-full border border-sage/35 px-5 py-3 text-sm font-medium text-ink transition hover:bg-ink hover:text-white"
-                >
-                  {service.cta}
-                </a>
-              </article>
-            ))}
-          </div>
+function HowWeWork({ t }: { t: SiteContent }) {
+  return (
+    <section id="coaching" className="bg-mist/35 py-24 sm:py-32">
+      <div className="narrow-shell">
+        <p className="section-label">{t.work.label}</p>
+        <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">{t.work.title}</h2>
+        <div className="mt-14 divide-y divide-sage/15 border-y border-sage/15">
+          {t.work.items.map((item) => (
+            <article key={item.title} className="grid gap-3 py-8 sm:grid-cols-[0.7fr_1fr] sm:gap-10">
+              <h3 className="font-serif text-2xl leading-snug text-ink">{item.title}</h3>
+              <p className="text-lg leading-8 text-stone">{item.text}</p>
+            </article>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section id="approach" className="section-shell py-20 sm:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-clay">{t.approach.label}</p>
-            <h2 className="mt-4 font-serif text-4xl leading-tight text-ink sm:text-5xl">
-              {t.approach.title}
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-stone">{t.approach.intro}</p>
-          </div>
-          <div className="grid gap-4">
-            {t.approach.items.map((item, index) => (
-              <div
-                key={item.title}
-                className="grid gap-4 rounded-lg border border-sage/18 bg-white/48 p-5 transition hover:bg-white/70 sm:grid-cols-[72px_1fr]"
-              >
-                <span className="font-serif text-4xl text-sage">{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <h3 className="text-lg font-semibold text-ink">{item.title}</h3>
-                  <p className="mt-2 leading-7 text-stone">{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="bg-mist/45 py-20 sm:py-28">
-        <div className="section-shell grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div>
-            <p className="text-sm uppercase tracking-[0.28em] text-clay">{t.contact.label}</p>
-            <h2 className="mt-4 font-serif text-4xl leading-tight text-ink sm:text-5xl">
-              {t.contact.title}
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-stone">{t.contact.intro}</p>
-            <p className="mt-7 text-sm text-stone">
-              {t.contact.direct}{" "}
-              <a className="font-medium text-ink underline decoration-sage/45 underline-offset-4" href={`mailto:${email}`}>
-                {email}
-              </a>
+function Services({ t }: { t: SiteContent }) {
+  return (
+    <section className="site-shell py-24 sm:py-32">
+      <div className="max-w-[760px]">
+        <p className="section-label">{t.services.label}</p>
+        <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">{t.services.title}</h2>
+      </div>
+      <div className="mt-12 grid gap-5 lg:grid-cols-3">
+        {t.services.cards.map((service) => (
+          <article key={service.title} className="journal-card flex min-h-[320px] flex-col p-6 transition hover:-translate-y-1 hover:border-sage/30 hover:bg-white/55 sm:p-7">
+            <h3 className="font-serif text-3xl leading-tight text-ink">{service.title}</h3>
+            <p className="mt-5 leading-7 text-stone">{service.description}</p>
+            <p className="mt-6 border-l border-clay/45 pl-4 text-sm leading-6 text-ink">
+              <span className="font-medium text-clay">{t.services.who}: </span>
+              {service.bestFor}
             </p>
-          </div>
+            <a href="#contact" className="mt-auto pt-8 text-sm font-medium text-sage transition hover:text-ink">
+              {t.services.cta}
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-          <form onSubmit={handleSubmit} className="rounded-lg border border-white/70 bg-ivory/80 p-5 shadow-soft sm:p-8">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="block text-sm font-medium text-ink">
-                {t.contact.name}
-                <input
-                  required
-                  name="name"
-                  placeholder={t.contact.placeholderName}
-                  className="mt-2 w-full rounded-lg border border-sage/22 bg-white/72 px-4 py-3 text-ink outline-none transition placeholder:text-stone/60 focus:border-sage focus:ring-4 focus:ring-sage/15"
-                />
-              </label>
-              <label className="block text-sm font-medium text-ink">
-                {t.contact.email}
-                <input
-                  required
-                  type="email"
-                  name="email"
-                  placeholder={t.contact.placeholderEmail}
-                  className="mt-2 w-full rounded-lg border border-sage/22 bg-white/72 px-4 py-3 text-ink outline-none transition placeholder:text-stone/60 focus:border-sage focus:ring-4 focus:ring-sage/15"
-                />
-              </label>
+function Testimonials({ t }: { t: SiteContent }) {
+  return (
+    <section className="bg-parchment/60 py-24 sm:py-32">
+      <div className="site-shell">
+        <div className="max-w-[760px]">
+          <p className="section-label">{t.testimonials.label}</p>
+          <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">
+            {t.testimonials.title}
+          </h2>
+        </div>
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {t.testimonials.items.map((item) => (
+            <figure key={item.source} className="journal-card p-6 sm:p-7">
+              <blockquote className="text-lg leading-8 text-ink">{item.quote}</blockquote>
+              <figcaption className="mt-7 text-sm text-stone">- {item.source}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQ({
+  t,
+  openFaq,
+  setOpenFaq
+}: {
+  t: SiteContent;
+  openFaq: number;
+  setOpenFaq: (index: number) => void;
+}) {
+  return (
+    <section id="faq" className="narrow-shell py-24 sm:py-32">
+      <p className="section-label">{t.faq.label}</p>
+      <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">{t.faq.title}</h2>
+      <div className="mt-12 divide-y divide-sage/15 border-y border-sage/15">
+        {t.faq.items.map((item, index) => {
+          const isOpen = openFaq === index;
+
+          return (
+            <div key={item.question} className="py-2">
+              <button
+                type="button"
+                className="flex w-full items-center justify-between gap-5 py-6 text-left"
+                onClick={() => setOpenFaq(isOpen ? -1 : index)}
+                aria-expanded={isOpen}
+              >
+                <span className="font-serif text-2xl leading-snug text-ink">{item.question}</span>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-sage/20 text-lg text-sage">
+                  {isOpen ? "-" : "+"}
+                </span>
+              </button>
+              {isOpen ? <p className="max-w-[680px] pb-7 text-base leading-8 text-stone">{item.answer}</p> : null}
             </div>
-            <label className="mt-5 block text-sm font-medium text-ink">
-              {t.contact.topic}
-              <input
-                name="topic"
-                placeholder={t.contact.placeholderTopic}
-                className="mt-2 w-full rounded-lg border border-sage/22 bg-white/72 px-4 py-3 text-ink outline-none transition placeholder:text-stone/60 focus:border-sage focus:ring-4 focus:ring-sage/15"
-              />
-            </label>
-            <label className="mt-5 block text-sm font-medium text-ink">
-              {t.contact.message}
-              <textarea
-                required
-                name="message"
-                rows={6}
-                placeholder={t.contact.placeholderMessage}
-                className="mt-2 w-full resize-none rounded-lg border border-sage/22 bg-white/72 px-4 py-3 text-ink outline-none transition placeholder:text-stone/60 focus:border-sage focus:ring-4 focus:ring-sage/15"
-              />
-            </label>
-            <button
-              type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-ink px-6 py-3 text-sm font-medium text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-sage sm:w-auto"
-            >
-              {t.contact.submit}
-            </button>
-            {submitted ? (
-              <p className="mt-5 rounded-lg border border-sage/25 bg-mist/42 px-4 py-3 text-sm leading-6 text-ink">
-                {t.contact.success}
-              </p>
-            ) : null}
-          </form>
-        </div>
-      </section>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
-      <footer className="border-t border-white/60 bg-ivory py-8">
-        <div className="section-shell flex flex-col gap-4 text-sm text-stone sm:flex-row sm:items-center sm:justify-between">
-          <p>
-            © {new Date().getFullYear()} Maia Wang. {t.footer.copyright}
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <a className="transition hover:text-ink" href={`mailto:${email}`}>
-              {t.footer.email}
-            </a>
-            <a className="transition hover:text-ink" href={redNoteUrl} target="_blank" rel="noreferrer">
-              {t.nav.redNote}
-            </a>
-            <a className="transition hover:text-ink" href={youtubeUrl} target="_blank" rel="noreferrer">
-              {t.nav.youtube}
-            </a>
-          </div>
+function Contact({
+  t,
+  submitted,
+  onSubmit
+}: {
+  t: SiteContent;
+  submitted: boolean;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}) {
+  return (
+    <section id="contact" className="bg-mist/35 py-24 sm:py-32">
+      <div className="site-shell grid gap-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)] lg:items-start">
+        <div className="max-w-[640px]">
+          <p className="section-label">{t.contact.label}</p>
+          <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">{t.contact.title}</h2>
+          <p className="mt-7 text-lg leading-8 text-stone">{t.contact.intro}</p>
+          <p className="mt-8 text-sm uppercase tracking-[0.2em] text-stone">{t.contact.emailLabel}</p>
+          <a className="mt-2 inline-block text-lg text-ink underline decoration-sage/35 underline-offset-4 transition hover:text-sage" href={`mailto:${email}`}>
+            {email}
+          </a>
         </div>
-      </footer>
-    </main>
+
+        <form onSubmit={onSubmit} className="journal-card p-5 sm:p-8">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="field-label">
+              {t.contact.name}
+              <input required name="name" placeholder={t.contact.placeholderName} className="field-input" />
+            </label>
+            <label className="field-label">
+              {t.contact.email}
+              <input required type="email" name="email" placeholder={t.contact.placeholderEmail} className="field-input" />
+            </label>
+          </div>
+          <label className="field-label mt-5 block">
+            {t.contact.message}
+            <textarea required name="message" rows={7} placeholder={t.contact.placeholderMessage} className="field-input resize-none" />
+          </label>
+          <button type="submit" className="button-primary mt-6">
+            {t.contact.cta}
+          </button>
+          {submitted ? (
+            <p className="mt-5 rounded-lg border border-sage/20 bg-mist/40 px-4 py-3 text-sm leading-6 text-ink">
+              {t.contact.success}
+            </p>
+          ) : null}
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function Footer({ t }: { t: SiteContent }) {
+  return (
+    <footer className="border-t border-sage/10 bg-ivory py-12">
+      <div className="site-shell grid gap-8 text-sm text-stone sm:grid-cols-[1fr_auto] sm:items-end">
+        <div>
+          <p className="font-serif text-2xl text-ink">Maia Wang</p>
+          <p className="mt-1">{t.meta.coach}</p>
+          <p className="mt-6 text-ink">{t.footer.note}</p>
+        </div>
+        <div className="flex flex-wrap gap-x-5 gap-y-3 sm:justify-end">
+          <a className="quiet-link" href={`mailto:${email}`}>
+            Email
+          </a>
+          <a className="quiet-link" href={youtubeUrl} target="_blank" rel="noreferrer">
+            {t.meta.youtube}
+          </a>
+          <a className="quiet-link" href={redNoteUrl} target="_blank" rel="noreferrer">
+            {t.meta.redNote}
+          </a>
+          <a className="quiet-link" href={podcastUrl}>
+            {t.meta.podcast}
+          </a>
+          <span>© 2026 Maia Wang</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function isEmphasisLine(line: string) {
+  return (
+    line.includes("?") ||
+    line.includes("？") ||
+    line.startsWith("\"") ||
+    line.startsWith("“") ||
+    line === "we can explore it together." ||
+    line === "我们可以一起探索它。"
   );
 }
