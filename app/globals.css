@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #2f3532;
+  background: #f7f1e8;
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(220, 231, 230, 0.72), transparent 34rem),
+    linear-gradient(180deg, #f7f1e8 0%, #f3eee6 48%, #ecf1ef 100%);
+  color: #2f3532;
+}
+
+::selection {
+  background: rgba(200, 143, 120, 0.28);
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+.section-shell {
+  margin-inline: auto;
+  width: min(1120px, calc(100% - 32px));
+}
+
+.soft-focus {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(247, 241, 232, 0.42)),
+    rgba(255, 255, 255, 0.34);
+  backdrop-filter: blur(18px);
+}
+
+.font-zh {
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+.font-zh .font-serif {
+  font-family: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+  letter-spacing: 0.01em;
+}
