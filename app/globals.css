@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -83,25 +85,30 @@ a {
 
 .font-zh {
   font-family:
-    "PingFang SC",
-    "Hiragino Sans GB",
-    "Noto Sans CJK SC",
-    "Microsoft YaHei UI",
-    "Microsoft YaHei",
-    system-ui,
-    sans-serif;
+    "Noto Serif SC",
+    "Source Han Serif SC",
+    "Source Han Serif CN",
+    "Songti SC",
+    "Hiragino Mincho ProN",
+    "Hiragino Mincho Pro",
+    "STSong",
+    "SimSun",
+    serif;
   letter-spacing: 0;
 }
 
 .font-zh .font-serif {
   font-family:
-    "Songti SC",
     "Noto Serif SC",
-    "Noto Serif CJK SC",
+    "Source Han Serif SC",
+    "Source Han Serif CN",
+    "Songti SC",
+    "Hiragino Mincho ProN",
+    "Hiragino Mincho Pro",
     "STSong",
     "SimSun",
     serif;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0;
 }
 

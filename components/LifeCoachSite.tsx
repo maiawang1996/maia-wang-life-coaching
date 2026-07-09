@@ -162,7 +162,11 @@ function Hero({ t, language }: { t: SiteContent; language: Language }) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ivory via-ivory/92 to-ivory/68" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-ivory to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-sage/12" />
-      <div className="site-shell relative grid min-h-[88vh] items-center pb-18 pt-28 sm:pt-32">
+      <div
+        className={`site-shell relative grid items-center ${
+          language === "zh" ? "min-h-[78vh] pb-14 pt-22 sm:min-h-[88vh] sm:pb-18 sm:pt-32" : "min-h-[88vh] pb-18 pt-28 sm:pt-32"
+        }`}
+      >
         <div className="animate-fade-up max-w-[760px]">
           <p className="section-label">{t.hero.label}</p>
           <h1
