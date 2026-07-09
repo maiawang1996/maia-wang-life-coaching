@@ -54,12 +54,12 @@ export const content = {
       ],
       journeyTitle: "My Journey",
       journey: [
-        "Lived in China, Japan, the UK, and the US",
-        "From humanities to software engineering",
-        "Background in business and technology",
-        "100+ therapy sessions",
-        "Two years of personal coaching",
-        "Currently in professional coach training"
+        "🌏 Lived in China, Japan, the UK, and the US",
+        "🧭 From humanities to software engineering",
+        "💻 Background in business and technology",
+        "🌿 100+ therapy sessions",
+        "✨ Two years of personal coaching",
+        "📚 Currently in professional coach training"
       ]
     },
     work: {

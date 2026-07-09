@@ -181,7 +181,7 @@ function Hero({ t }: { t: SiteContent }) {
           </div>
         </div>
 
-        <div className="mt-16 grid gap-4 border-t border-sage/15 pt-7 text-sm text-stone sm:grid-cols-3">
+        <div className="mt-16 hidden gap-4 border-t border-sage/15 pt-7 text-sm text-stone lg:grid lg:grid-cols-3">
           {t.hero.traits.map((trait) => (
             <p key={trait}>{trait}</p>
           ))}
@@ -228,7 +228,7 @@ function MeetMaia({ t, language }: { t: SiteContent; language: Language }) {
           <div
             className={`max-w-[720px] space-y-3.5 ${
               language === "en"
-                ? "font-serif text-[1.22rem] leading-8 text-ink/90 sm:text-[1.32rem] sm:leading-9"
+                ? "font-serif text-[1.08rem] leading-8 text-ink/90 sm:text-[1.14rem] sm:leading-8"
                 : "text-base leading-8 text-stone sm:text-lg sm:leading-8"
             }`}
           >
