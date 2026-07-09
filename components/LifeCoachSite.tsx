@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { FormEvent, useMemo, useState } from "react";
 import { content, Language } from "@/lib/content";
 
@@ -36,7 +35,7 @@ export default function LifeCoachSite() {
       <Header language={language} setLanguage={setLanguage} t={t} />
       <Hero t={t} />
       <LetterSection t={t} />
-      <MeetMaia t={t} />
+      <MeetMaia t={t} language={language} />
       <HowWeWork t={t} />
       <Services t={t} />
       <Testimonials t={t} />
@@ -158,30 +157,35 @@ function SocialLinks({ t }: { t: SiteContent }) {
 
 function Hero({ t }: { t: SiteContent }) {
   return (
-    <section id="home" className="site-shell grid min-h-[92vh] items-center gap-12 pb-20 pt-28 sm:pt-32 lg:grid-cols-[minmax(0,0.94fr)_minmax(300px,0.72fr)]">
-      <div className="animate-fade-up max-w-[760px]">
-        <p className="section-label">{t.hero.label}</p>
-        <h1 className="mt-7 max-w-[760px] font-serif text-[clamp(3.25rem,6vw,6.75rem)] leading-[0.98] text-ink">
-          {t.hero.title}
-        </h1>
-        <p className="mt-8 max-w-[690px] text-lg leading-8 text-stone sm:text-xl sm:leading-9">
-          {t.hero.subtitle}
-        </p>
-        <a href="#contact" className="button-primary mt-10">
-          {t.hero.cta}
-        </a>
-      </div>
+    <section id="home" className="relative isolate overflow-hidden">
+      <div className="absolute inset-0 -z-20 bg-[url('/images/hero-wellness.png')] bg-cover bg-center opacity-[0.18] saturate-[0.72]" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ivory via-ivory/92 to-ivory/68" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-ivory to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-sage/12" />
+      <div className="site-shell relative grid min-h-[88vh] items-center pb-18 pt-28 sm:pt-32">
+        <div className="animate-fade-up max-w-[760px]">
+          <p className="section-label">{t.hero.label}</p>
+          <h1 className="mt-7 max-w-[760px] font-serif text-[clamp(2.85rem,5.7vw,6.1rem)] leading-[0.98] text-ink">
+            {t.hero.title}
+          </h1>
+          <p className="mt-8 max-w-[670px] text-lg leading-8 text-stone sm:text-xl sm:leading-9">
+            {t.hero.subtitle}
+          </p>
+          <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center">
+            <a href="#contact" className="button-primary">
+              {t.hero.cta}
+            </a>
+            <p className="max-w-sm border-l border-clay/35 pl-5 text-sm leading-7 text-stone">
+              {t.hero.note}
+            </p>
+          </div>
+        </div>
 
-      <div className="animate-fade-in relative mx-auto aspect-[4/5] w-full max-w-[390px] overflow-hidden rounded-t-[220px] rounded-b-lg border border-white/60 bg-mist/35 shadow-soft">
-        <Image
-          src="/images/hero-wellness.png"
-          alt={t.hero.imageAlt}
-          fill
-          priority
-          className="object-cover opacity-[0.92] saturate-[0.78]"
-          sizes="(min-width: 1024px) 390px, 86vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ivory/28 via-transparent to-white/12" />
+        <div className="mt-16 grid gap-4 border-t border-sage/15 pt-7 text-sm text-stone sm:grid-cols-3">
+          {t.hero.traits.map((trait) => (
+            <p key={trait}>{trait}</p>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -210,18 +214,24 @@ function LetterSection({ t }: { t: SiteContent }) {
   );
 }
 
-function MeetMaia({ t }: { t: SiteContent }) {
+function MeetMaia({ t, language }: { t: SiteContent; language: Language }) {
   return (
     <section id="about" className="site-shell py-24 sm:py-32">
       <div className="grid gap-14 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <p className="section-label">{t.meet.label}</p>
-        <h2 className="mt-7 max-w-md font-serif text-4xl leading-tight text-ink sm:text-5xl">
+          <h2 className="mt-7 max-w-md font-serif text-4xl leading-tight text-ink sm:text-5xl">
             {t.meet.title}
           </h2>
         </div>
         <div>
-          <div className="max-w-[760px] space-y-6 text-lg leading-9 text-stone">
+          <div
+            className={`max-w-[720px] space-y-3.5 ${
+              language === "en"
+                ? "font-serif text-[1.22rem] leading-8 text-ink/90 sm:text-[1.32rem] sm:leading-9"
+                : "text-base leading-8 text-stone sm:text-lg sm:leading-8"
+            }`}
+          >
             {t.meet.body.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
@@ -245,7 +255,7 @@ function MeetMaia({ t }: { t: SiteContent }) {
 
 function HowWeWork({ t }: { t: SiteContent }) {
   return (
-    <section id="coaching" className="bg-mist/35 py-24 sm:py-32">
+    <section id="coaching" className="border-y border-sage/10 bg-parchment/45 py-24 sm:py-32">
       <div className="narrow-shell">
         <p className="section-label">{t.work.label}</p>
         <h2 className="mt-7 font-serif text-4xl leading-tight text-ink sm:text-5xl">{t.work.title}</h2>
@@ -360,7 +370,7 @@ function Contact({
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
-    <section id="contact" className="bg-mist/35 py-24 sm:py-32">
+    <section id="contact" className="border-y border-sage/10 bg-parchment/45 py-24 sm:py-32">
       <div className="site-shell grid gap-12 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1fr)] lg:items-start">
         <div className="max-w-[640px]">
           <p className="section-label">{t.contact.label}</p>
@@ -391,7 +401,7 @@ function Contact({
             {t.contact.cta}
           </button>
           {submitted ? (
-            <p className="mt-5 rounded-lg border border-sage/20 bg-mist/40 px-4 py-3 text-sm leading-6 text-ink">
+            <p className="mt-5 rounded-lg border border-sage/20 bg-ivory/70 px-4 py-3 text-sm leading-6 text-ink">
               {t.contact.success}
             </p>
           ) : null}
@@ -403,7 +413,7 @@ function Contact({
 
 function Footer({ t }: { t: SiteContent }) {
   return (
-    <footer className="border-t border-sage/10 bg-ivory py-12">
+    <footer className="border-t border-sage/10 bg-parchment/45 py-12">
       <div className="site-shell grid gap-8 text-sm text-stone sm:grid-cols-[1fr_auto] sm:items-end">
         <div>
           <p className="font-serif text-2xl text-ink">Maia Wang</p>

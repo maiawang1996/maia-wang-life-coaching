@@ -104,7 +104,14 @@ a {
   letter-spacing: 0;
 }
 
-.font-zh p {
+.font-zh p,
+.font-zh blockquote {
+  font-family:
+    "Songti SC",
+    "Noto Serif CJK SC",
+    "STSong",
+    "SimSun",
+    serif;
   line-height: 1.95;
 }
 

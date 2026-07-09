@@ -21,6 +21,8 @@ export const content = {
       subtitle:
         "Together, we'll explore what truly matters to you, reconnect with your inner strengths, and move forward with greater clarity, confidence, and purpose.",
       cta: "Book a Discovery Call",
+      note: "Insightful, authentic coaching for people ready to listen more deeply to themselves.",
+      traits: ["Deep listening", "Honest reflection", "Quiet confidence"],
       imageAlt: "A quiet table by a window with a journal, tea, and soft morning light"
     },
     letter: {
@@ -53,7 +55,7 @@ export const content = {
       journeyTitle: "My Journey",
       journey: [
         "Lived in China, Japan, the UK, and the US",
-        "Career transition into software engineering",
+        "From humanities to software engineering",
         "Background in business and technology",
         "100+ therapy sessions",
         "Two years of personal coaching",
@@ -64,10 +66,6 @@ export const content = {
       label: "How We'll Work Together",
       title: "Quiet, honest, and deeply listening.",
       items: [
-        {
-          title: "I won't tell you what to do.",
-          text: "Because I believe you know your life better than anyone else."
-        },
         {
           title: "I'll ask thoughtful questions.",
           text: "Sometimes a better question changes more than a better answer."
@@ -117,18 +115,18 @@ export const content = {
       items: [
         {
           quote:
-            "Working with Maia didn't give me all the answers-it helped me ask better questions. Every session gave me the space to slow down, untangle my thoughts, and make decisions that finally felt like my own.",
+            "I came into coaching feeling stuck between who I was and who I thought I was supposed to become. Our conversations helped me reconnect with what truly mattered to me.",
+          source: "Marketing Manager, 27"
+        },
+        {
+          quote:
+            "Every conversation left me feeling a little lighter, a little clearer, and a little more confident in trusting myself.",
           source: "Product Designer, 24"
         },
         {
           quote:
             "What I appreciated most was how deeply Maia listened. She never rushed to give advice or tell me what I should do. Instead, she helped me hear myself more clearly.",
           source: "Software Engineer, 31"
-        },
-        {
-          quote:
-            "I came into coaching feeling stuck between who I was and who I thought I was supposed to become. Our conversations helped me reconnect with what truly mattered to me.",
-          source: "Marketing Manager, 27"
         }
       ]
     },
@@ -206,6 +204,8 @@ export const content = {
       subtitle:
         "我们会一起探索真正重要的事情，重新连接你内在的力量，并带着更多清晰、信心与方向感继续前行。",
       cta: "预约一次探索通话",
+      note: "有思考感、真诚的 coaching，陪你更深地听见自己。",
+      traits: ["深度倾听", "真诚反思", "安静而坚定"],
       imageAlt: "窗边安静的桌面上放着手账、茶和柔和晨光"
     },
     letter: {
@@ -237,22 +237,18 @@ export const content = {
       ],
       journeyTitle: "My Journey",
       journey: [
-        "曾在中国、日本、英国和美国学习生活",
-        "经历过从文科到软件工程的职业转型",
-        "拥有商业与科技背景",
-        "累计 100+ 节心理咨询经历",
-        "两年个人 coaching 经历",
-        "正在接受系统的专业 coaching 训练"
+        "🌏 曾在中国、日本、英国和美国学习生活",
+        "🧭 文科背景到软件工程的职业转型",
+        "💻 拥有商业与科技背景",
+        "🌿 累计 100+ 节心理咨询经历",
+        "✨ 两年个人 coaching 经历",
+        "📚 正在接受系统的专业 coaching 训练"
       ]
     },
     work: {
       label: "How We'll Work Together",
       title: "认真倾听，也认真思考。",
       items: [
-        {
-          title: "我不会告诉你应该怎么做。",
-          text: "因为我相信，没有人比你更了解自己的人生。"
-        },
         {
           title: "我会提出有思考感的问题。",
           text: "有时候，一个更好的问题，比一个直接的答案更能带来改变。"
@@ -263,11 +259,11 @@ export const content = {
         },
         {
           title: "我们会一起理解正在发生的事情。",
-          text: "一起。"
+          text: "你和我一起。"
         },
         {
           title: "你会带着更多清晰离开。",
-          text: "不是因为我给了你答案。而是因为你重新发现了它。"
+          text: "不是因为我给了你答案。而是因为你重新看见了它。"
         }
       ]
     },
@@ -302,18 +298,18 @@ export const content = {
       items: [
         {
           quote:
-            "和 Maia 的 coaching 并不是让我立刻得到所有答案，而是帮助我提出更好的问题。每一次对话都让我慢下来，理清思绪，并做出更像自己的选择。",
+            "开始 coaching 时，我卡在‘我是谁’和‘我以为我应该成为谁’之间。我们的对话帮助我重新连接到真正重要的事情。",
+          source: "市场经理，27 岁"
+        },
+        {
+          quote:
+            "每一次对话结束后，我都感觉轻了一点、清晰了一点，也更有信心去相信自己。",
           source: "产品设计师，24 岁"
         },
         {
           quote:
             "我最珍惜的是 Maia 真正认真地听我说话。她不会急着给建议，也不会告诉我应该怎么做，而是帮助我更清楚地听见自己。",
           source: "软件工程师，31 岁"
-        },
-        {
-          quote:
-            "开始 coaching 时，我卡在‘我是谁’和‘我以为我应该成为谁’之间。我们的对话帮助我重新连接到真正重要的事情。",
-          source: "市场经理，27 岁"
         }
       ]
     },
