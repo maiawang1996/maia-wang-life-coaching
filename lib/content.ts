@@ -200,7 +200,7 @@ export const content = {
     },
     hero: {
       label: "Maia Wang 人生教练",
-      title: "活出真正属于你的人生。",
+      title: "让每一个选择，都更忠于自己。",
       subtitle:
         "我们会一起探索真正重要的事情，重新连接你内在的力量，并带着更多清晰、信心与方向感继续前行。",
       cta: "预约一次探索通话",

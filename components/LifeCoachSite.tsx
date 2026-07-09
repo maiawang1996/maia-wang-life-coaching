@@ -33,7 +33,7 @@ export default function LifeCoachSite() {
   return (
     <main lang={language === "zh" ? "zh-CN" : "en"} className={language === "zh" ? "font-zh" : undefined}>
       <Header language={language} setLanguage={setLanguage} t={t} />
-      <Hero t={t} />
+      <Hero t={t} language={language} />
       <LetterSection t={t} />
       <MeetMaia t={t} language={language} />
       <HowWeWork t={t} />
@@ -155,7 +155,7 @@ function SocialLinks({ t }: { t: SiteContent }) {
   );
 }
 
-function Hero({ t }: { t: SiteContent }) {
+function Hero({ t, language }: { t: SiteContent; language: Language }) {
   return (
     <section id="home" className="relative isolate overflow-hidden">
       <div className="absolute inset-0 -z-20 bg-[url('/images/hero-wellness.png')] bg-cover bg-center opacity-[0.18] saturate-[0.72]" />
@@ -165,7 +165,13 @@ function Hero({ t }: { t: SiteContent }) {
       <div className="site-shell relative grid min-h-[88vh] items-center pb-18 pt-28 sm:pt-32">
         <div className="animate-fade-up max-w-[760px]">
           <p className="section-label">{t.hero.label}</p>
-          <h1 className="mt-7 max-w-[760px] font-serif text-[clamp(2.85rem,5.7vw,6.1rem)] leading-[0.98] text-ink">
+          <h1
+            className={`mt-7 max-w-[760px] font-serif text-ink ${
+              language === "zh"
+                ? "text-[clamp(2rem,8.1vw,4.35rem)] leading-[1.14]"
+                : "text-[clamp(2.85rem,5.7vw,6.1rem)] leading-[0.98]"
+            }`}
+          >
             {t.hero.title}
           </h1>
           <p className="mt-8 max-w-[670px] text-lg leading-8 text-stone sm:text-xl sm:leading-9">
