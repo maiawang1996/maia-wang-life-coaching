@@ -21,13 +21,43 @@ const navItems = [
 export default function LifeCoachSite() {
   const [language, setLanguage] = useState<Language>("en");
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
   const t = useMemo(() => content[language], [language]);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
-    event.currentTarget.reset();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    formData.append("_subject", "New coaching inquiry from maiawang.life");
+    formData.append("_template", "table");
+    formData.append("_captcha", "false");
+
+    setSubmitting(true);
+    setSubmitted(false);
+    setSubmitError(false);
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${email}`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json"
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error("Email submission failed");
+      }
+
+      setSubmitted(true);
+      form.reset();
+    } catch {
+      setSubmitError(true);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -40,7 +70,7 @@ export default function LifeCoachSite() {
       <Services t={t} />
       <Testimonials t={t} />
       <FAQ t={t} openFaq={openFaq} setOpenFaq={setOpenFaq} />
-      <Contact t={t} submitted={submitted} onSubmit={handleSubmit} />
+      <Contact t={t} submitted={submitted} submitError={submitError} submitting={submitting} onSubmit={handleSubmit} />
       <Footer t={t} />
     </main>
   );
@@ -164,7 +194,7 @@ function Hero({ t, language }: { t: SiteContent; language: Language }) {
       <div className="pointer-events-none absolute inset-x-0 top-24 h-px bg-sage/12" />
       <div
         className={`site-shell relative grid items-center ${
-          language === "zh" ? "min-h-[78vh] pb-14 pt-22 sm:min-h-[88vh] sm:pb-18 sm:pt-32" : "min-h-[88vh] pb-18 pt-28 sm:pt-32"
+          language === "zh" ? "min-h-[82vh] pb-14 pt-[6.5rem] sm:min-h-[88vh] sm:pb-18 sm:pt-32" : "min-h-[88vh] pb-18 pt-28 sm:pt-32"
         }`}
       >
         <div className="animate-fade-up max-w-[760px]">
@@ -273,7 +303,7 @@ function HowWeWork({ t }: { t: SiteContent }) {
           {t.work.items.map((item) => (
             <article key={item.title} className="grid gap-3 py-8 sm:grid-cols-[0.7fr_1fr] sm:gap-10">
               <h3 className="font-serif text-2xl leading-snug text-ink">{item.title}</h3>
-              <p className="text-lg leading-8 text-stone">{item.text}</p>
+              <p className="text-base leading-7 text-stone sm:text-lg sm:leading-8">{item.text}</p>
             </article>
           ))}
         </div>
@@ -373,10 +403,14 @@ function FAQ({
 function Contact({
   t,
   submitted,
+  submitError,
+  submitting,
   onSubmit
 }: {
   t: SiteContent;
   submitted: boolean;
+  submitError: boolean;
+  submitting: boolean;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
@@ -407,12 +441,17 @@ function Contact({
             {t.contact.message}
             <textarea required name="message" rows={7} placeholder={t.contact.placeholderMessage} className="field-input resize-none" />
           </label>
-          <button type="submit" className="button-primary mt-6">
-            {t.contact.cta}
+          <button type="submit" className="button-primary mt-6 disabled:cursor-not-allowed disabled:opacity-70" disabled={submitting}>
+            {submitting ? t.contact.sending : t.contact.cta}
           </button>
           {submitted ? (
             <p className="mt-5 rounded-lg border border-sage/20 bg-ivory/70 px-4 py-3 text-sm leading-6 text-ink">
               {t.contact.success}
+            </p>
+          ) : null}
+          {submitError ? (
+            <p className="mt-5 rounded-lg border border-clay/25 bg-ivory/70 px-4 py-3 text-sm leading-6 text-ink">
+              {t.contact.error}
             </p>
           ) : null}
         </form>
@@ -426,9 +465,11 @@ function Footer({ t }: { t: SiteContent }) {
     <footer className="border-t border-sage/10 bg-parchment/45 py-12">
       <div className="site-shell grid gap-8 text-sm text-stone sm:grid-cols-[1fr_auto] sm:items-end">
         <div>
-          <p className="font-serif text-2xl text-ink">Maia Wang</p>
-          <p className="mt-1">{t.meta.coach}</p>
-          <p className="mt-6 text-ink">{t.footer.note}</p>
+          <p className="flex flex-wrap items-baseline gap-x-3 font-serif text-2xl text-ink">
+            <span>Maia Wang</span>
+            <span className="text-lg text-stone">{t.meta.coach}</span>
+          </p>
+          {t.footer.note ? <p className="mt-6 text-ink">{t.footer.note}</p> : null}
         </div>
         <div className="flex flex-wrap gap-x-5 gap-y-3 sm:justify-end">
           <a className="quiet-link" href={`mailto:${email}`}>

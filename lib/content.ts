@@ -42,7 +42,6 @@ export const content = {
       label: "Meet Maia",
       title: "A thoughtful space for better questions.",
       body: [
-        "I didn't become a coach because I had life figured out.",
         "I became a coach because I've spent years asking the same questions many of my clients ask today.",
         "What kind of life do I really want? What truly matters to me?",
         "How do I make decisions that feel true to who I am?",
@@ -175,7 +174,9 @@ export const content = {
       email: "Email",
       message: "Message",
       cta: "Book a Discovery Call",
-      success: "Thank you. Your message has been received in this demo form, and Maia can connect it to email later.",
+      sending: "Sending...",
+      success: "Thank you. Your message has been received. Maia will get back to you soon.",
+      error: "Something went wrong. Please email Maia directly at maiaworld@163.com.",
       placeholderName: "Your name",
       placeholderEmail: "you@example.com",
       placeholderMessage: "Tell me what you would like to explore."
@@ -222,7 +223,7 @@ export const content = {
       ]
     },
     meet: {
-      label: "Meet Maia",
+      label: "认识 Maia",
       title: "一个可以慢下来，提出更好问题的空间。",
       body: [
         "我并不是因为已经想清楚了人生，才成为一名 coach。",
@@ -235,7 +236,7 @@ export const content = {
         "今天，这也是我希望带给别人的东西：",
         "一个可以慢下来、认真思考、诚实提问，并找到自己答案的空间。"
       ],
-      journeyTitle: "My Journey",
+      journeyTitle: "我的经历",
       journey: [
         "🌏 曾在中国、日本、英国和美国学习生活",
         "🧭 文科背景到软件工程的职业转型",
@@ -246,7 +247,7 @@ export const content = {
       ]
     },
     work: {
-      label: "How We'll Work Together",
+      label: "我们会如何一起工作",
       title: "认真倾听，也认真思考。",
       items: [
         {
@@ -268,7 +269,7 @@ export const content = {
       ]
     },
     services: {
-      label: "服务",
+      label: "服务内容",
       title: "从简单的一步开始。",
       who: "适合",
       cta: "了解更多",
@@ -358,13 +359,15 @@ export const content = {
       email: "邮箱",
       message: "留言",
       cta: "预约一次探索通话",
-      success: "谢谢你。这个演示表单已记录提交状态，之后可以接入真实邮件发送。",
+      sending: "发送中...",
+      success: "谢谢你。你的留言已收到，Maia 会尽快与你联系。",
+      error: "发送时遇到了一点问题，请直接发邮件到 maiaworld@163.com。",
       placeholderName: "你的名字",
       placeholderEmail: "you@example.com",
       placeholderMessage: "告诉我你想一起探索什么。"
     },
     footer: {
-      note: "谢谢你来到这里。"
+      note: ""
     }
   }
 } as const;
